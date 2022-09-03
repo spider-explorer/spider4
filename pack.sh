@@ -6,8 +6,6 @@ killall boot4-x86_64-static || true
 sleep 3
 cp -p boot4-x86_64-static.exe ~/../
 rm -rf *.tmp
-rm -rf common
-cp -rp ~/qt/common .
 find .  -maxdepth 2 -iname *.h -o -iname *.cpp | xargs uncrustify -l CPP --replace --no-backup
 #astyle --recursive --ascii --style=allman --suffix=none *.java,*.c,*.cpp,*.cxx,*.h,*.hpp,*.hxx | sed -e "/Unchanged  /d"
 ts=`date "+%Y.%m.%d.%H.%M.%S"`
@@ -50,7 +48,8 @@ cat << EOS > spider.json
     "persist": "temp"
 }
 EOS
-echo $GITHUB_ALL | gh auth login --with-token
+#echo $GITHUB_ALL | gh auth login --with-token
+gh auth login --hostname github.com
 cp spider.json upload.tmp/spider-release/spider-v$ts.json
 git add .
 git commit -m"Spider Explorer v$ts"
