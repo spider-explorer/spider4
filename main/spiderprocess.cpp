@@ -64,7 +64,7 @@ SpiderProcess::SpiderProcess(SpiderProcCallback callback)
     settings.settings().endGroup();
     env.insert("HOME", np(uhomeDir));
     env.insert("PATH", pathAdded + ";" + g_core().env()["path"]);
-    env.insert("REPO", QString(g_core().env()["docs"] + "/.repo/").replace("/", "\\"));
+    env.insert("REPO", QString(g_core().env()["docs"] + "/.repo").replace("/", "\\"));
     env.insert("MSYS2", msys2Name);
     env.insert("WSLENV", wslenv.join(":"));
     m_proc->setWorkingDirectory(np(uhomeDir));
