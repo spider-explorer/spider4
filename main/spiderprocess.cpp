@@ -66,6 +66,13 @@ SpiderProcess::SpiderProcess(SpiderProcCallback callback)
     env.insert("PATH", pathAdded + ";" + g_core().env()["path"]);
     env.insert("REPO", QString(g_core().env()["docs"] + "/.repo").replace("/", "\\"));
     env.insert("MSYS2", msys2Name);
+    env.insert("MINGW_CHOST", "x86_64-w64-mingw32");
+    env.insert("MINGW_PACKAGE_PREFIX", "mingw-w64-x86_64");
+    env.insert("MINGW_PREFIX", "/mingw64");
+    env.insert("MSYSTEM_CARCH", "x86_64");
+    env.insert("MSYSTEM_CHOST", "x86_64-w64-mingw32");
+    env.insert("MSYSTEM_PREFIX", "/mingw64");
+    env.insert("MSYSTEM", "MINGW64");
     env.insert("WSLENV", wslenv.join(":"));
     m_proc->setWorkingDirectory(np(uhomeDir));
     callback(SpiderProcStage::PROC_SETUP, this);
