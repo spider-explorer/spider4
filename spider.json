@@ -1,15 +1,15 @@
 {
-    "version": "2022.09.04.02.11.00",
+    "version": "2022.09.04.02.23.45",
     "description": "",
     "homepage": "",
     "license": "MIT",
     "depends": [
     ],
     "url": [
-        "https://github.com/spider-explorer/spider4/releases/download/v2022.09.04.02.11.00/spider-v2022.09.04.02.11.00.zip"
+        "https://github.com/spider-explorer/spider4/releases/download/v2022.09.04.02.23.45/spider-v2022.09.04.02.23.45.zip"
     ],
     "hash": [
-        "35ddcf161c3635c411a2f5603b20d8e8316101e4224e54f8a87b3b0936d11071"
+        "1ab2466e862d73b519c4ee55d00b4bb894e649ed58eca89c9750cb86fa59f77a"
     ],
     "bin": [
         [
