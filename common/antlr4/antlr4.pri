@@ -1,4 +1,0 @@
-#DEFINES += ANTLR4CPP_STATIC
-INCLUDEPATH += $$PWD
-INCLUDEPATH += $$PWD/antlr4-cpp-runtime-4.10.1
-LIBS += -L$$PWD -lantlr4

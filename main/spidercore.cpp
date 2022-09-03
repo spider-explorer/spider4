@@ -211,13 +211,15 @@ SpiderCore::SpiderCore(QSplashScreen &splash, const QString &mainDllPath) : m_sp
 #endif
 #endif
         //
-        QUrl softwareUrl("https://gitlab.com/spider-explorer/spider-software2/-/raw/main/spider-software.json");
+        QUrl softwareUrl("https://gitlab.com/spider-explorer/spider-software-2/-/raw/main/spider-software.json");
         JsonSettings softwareSettings(softwareUrl);
         qdebug_line1("SpiderCore::SpiderCore(5)");
+        prepareProgram(softwareSettings, "busybox");
         QStringList appList = softwareSettings.value("software").toMap().keys();
         for(int i=0; i<appList.size(); i++)
         {
             qdebug_line2(i, appList[i]);
+            if(appList[i]=="busybox") continue;
             if(appList[i]=="git") continue;
             prepareProgram(softwareSettings, appList[i]);
         }
