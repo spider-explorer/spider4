@@ -49,7 +49,7 @@ cat << EOS > spider.json
 }
 EOS
 #echo $GITHUB_ALL | gh auth login --with-token
-gh auth login --hostname github.com
+gh auth login --hostname github.com --git-protocol https --web
 cp spider.json upload.tmp/spider-release/spider-v$ts.json
 git add .
 git commit -m"Spider Explorer v$ts"
