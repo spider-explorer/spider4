@@ -201,7 +201,16 @@ SpiderCore::SpiderCore(QSplashScreen &splash, const QString &mainDllPath) : m_sp
             prepareProgram(softwareSettings, appList[i]);
         }
         qdebug_line();
-        prepareProgram(softwareSettings, "msys2");
+        QString msys2_dir = prepareProgram(softwareSettings, "msys2");
+        {
+            // pacman-key --init
+            //msys64/usr/bin/pacman-key
+            QProcess msys2Proc;
+            msys2Proc.setProgram(msys2_dir + "/msys64/usr/bin/bash.exe");
+            msys2Proc.setArguments(QStringList() <<  msys2_dir + "/msys64/usr/bin/pacman-key" << "--init");
+            msys2Proc.start();
+            msys2Proc.waitForFinished();
+        }
         //
         ////QString sevenzip_dir = prepareProgram(softwareSettings, "7zip");
         //
