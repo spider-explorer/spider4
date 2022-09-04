@@ -72,7 +72,7 @@ SpiderProcess::SpiderProcess(SpiderProcCallback callback)
     env.insert("MSYSTEM_CHOST", "x86_64-w64-mingw32");
     env.insert("MSYSTEM_PREFIX", "/mingw64");
     env.insert("MSYSTEM", "MINGW64");
-    env.insert("GOROOT", np(g_core().env()["prof"] + "/.software/git-sdk/current/mingw64/lib/go"));
+    env.insert("GOROOT", np(g_core().env()["prof"] + "/.software/msys64/current/mingw64/lib/go"));
     env.insert("WSLENV", wslenv.join(":"));
     m_proc->setWorkingDirectory(np(uhomeDir));
     callback(SpiderProcStage::PROC_SETUP, this);
