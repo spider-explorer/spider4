@@ -72,8 +72,8 @@ QString SpiderCore::prepareProgram(JsonSettings &softwareSettings, QString progN
         .arg(progName)
         .arg(version),
         Qt::AlignLeft, Qt::white);
-    QString installDir = progName=="msys64" ? QString(R"***(C:\msys64)***") : m_env["prof"] + QString("/.software/%1/%2").arg(progName).arg(version);
-    QString junctionDir = progName=="msys64" ? QString("") : m_env["prof"] + QString("/.software/%1/current").arg(progName);
+    QString installDir = /* progName=="msys64" ? QString(R"***(C:\msys64)***") : */ m_env["prof"] + QString("/.software/%1/%2").arg(progName).arg(version);
+    QString junctionDir = /* progName=="msys64" ? QString("") : */ m_env["prof"] + QString("/.software/%1/current").arg(progName);
     qdebug_line1("SpiderCore::prepareProgram(5)");
     qdebug_line2("installDir", installDir);
     if (!QFileInfo(installDir).exists())
