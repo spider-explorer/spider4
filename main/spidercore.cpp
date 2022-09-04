@@ -202,6 +202,7 @@ SpiderCore::SpiderCore(QSplashScreen &splash, const QString &mainDllPath) : m_sp
         }
         qdebug_line();
         QString msys2_dir = prepareProgram(softwareSettings, "msys2");
+        if (false)
         {
             // pacman-key --init
             //msys64/usr/bin/pacman-key
