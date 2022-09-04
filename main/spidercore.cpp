@@ -72,15 +72,14 @@ QString SpiderCore::prepareProgram(JsonSettings &softwareSettings, QString progN
         .arg(progName)
         .arg(version),
         Qt::AlignLeft, Qt::white);
-    QString installDir = m_env["prof"] + QString("/.software/%1/%2").arg(progName).arg(version);
-    QString junctionDir = m_env["prof"] + QString("/.software/%1/current").arg(progName);
+    QString installDir = progName=="msys64" ? QString(R"***(C:\msys64)***") : m_env["prof"] + QString("/.software/%1/%2").arg(progName).arg(version);
+    QString junctionDir = progName=="msys64" ? QString("") : m_env["prof"] + QString("/.software/%1/current").arg(progName);
     qdebug_line1("SpiderCore::prepareProgram(5)");
     qdebug_line2("installDir", installDir);
     if (!QFileInfo(installDir).exists())
     {
         qdebug_line1("SpiderCore::prepareProgram(6)");
         qdebug_line2("(!QFileInfo(installDir).exists())", installDir);
-#if 0x1
         qDebug() << extract_archive(dlPath, installDir,
                                     [this, &locale, progName, version](qint64 extractSizeTotal)
         {
@@ -91,29 +90,6 @@ QString SpiderCore::prepareProgram(JsonSettings &softwareSettings, QString progN
                 .arg(locale.formattedDataSize(extractSizeTotal)),
                 Qt::AlignLeft, Qt::white);
         });
-#else
-        //struct DecompressInfo
-        //{
-        //    QSplashScreen *splash = nullptr;
-        //    QLocale *locale = nullptr;
-        //    QString progName;
-        //    QString version;
-        //};
-        DecompressInfo dinfo { &m_splash, &locale, progName, version };
-        std::size_t archive_id= cli.extract_archive(dlPath.toStdString(),
-                                                    installDir.toStdString());
-        while(true)
-        {
-            std::int64_t progress = cli.extract_progress(archive_id);
-            m_splash.showMessage(
-                QString("%1 を更新中(%2)...インストール中: %3")
-                .arg(progName)
-                .arg(version)
-                .arg(locale.formattedDataSize(progress)),
-                Qt::AlignLeft, Qt::white);
-            if (progress < 0) break;
-        }
-#endif
         JunctionManager().remove(junctionDir);
         JunctionManager().create(junctionDir, installDir);
     }
@@ -221,9 +197,11 @@ SpiderCore::SpiderCore(QSplashScreen &splash, const QString &mainDllPath) : m_sp
             qdebug_line2(i, appList[i]);
             if(appList[i]=="busybox") continue;
             if(appList[i]=="git") continue;
+            if(appList[i]=="msys64") continue;
             prepareProgram(softwareSettings, appList[i]);
         }
         qdebug_line();
+        prepareProgram(softwareSettings, "msys64");
         //
         ////QString sevenzip_dir = prepareProgram(softwareSettings, "7zip");
         //
