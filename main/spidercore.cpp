@@ -72,8 +72,8 @@ QString SpiderCore::prepareProgram(JsonSettings &softwareSettings, QString progN
         .arg(progName)
         .arg(version),
         Qt::AlignLeft, Qt::white);
-    QString installDir = /* progName=="msys64" ? QString(R"***(C:\msys64)***") : */ m_env["prof"] + QString("/.software/%1/%2").arg(progName).arg(version);
-    QString junctionDir = /* progName=="msys64" ? QString("") : */ m_env["prof"] + QString("/.software/%1/current").arg(progName);
+    QString installDir = /* progName=="msys2" ? QString(R"***(C:\msys2)***") : */ m_env["prof"] + QString("/.software/%1/%2").arg(progName).arg(version);
+    QString junctionDir = /* progName=="msys2" ? QString("") : */ m_env["prof"] + QString("/.software/%1/current").arg(progName);
     qdebug_line1("SpiderCore::prepareProgram(5)");
     qdebug_line2("installDir", installDir);
     if (!QFileInfo(installDir).exists())
@@ -197,11 +197,11 @@ SpiderCore::SpiderCore(QSplashScreen &splash, const QString &mainDllPath) : m_sp
             qdebug_line2(i, appList[i]);
             if(appList[i]=="busybox") continue;
             if(appList[i]=="git") continue;
-            if(appList[i]=="msys64") continue;
+            if(appList[i]=="msys2") continue;
             prepareProgram(softwareSettings, appList[i]);
         }
         qdebug_line();
-        prepareProgram(softwareSettings, "msys64");
+        prepareProgram(softwareSettings, "msys2");
         //
         ////QString sevenzip_dir = prepareProgram(softwareSettings, "7zip");
         //
