@@ -2,6 +2,7 @@
 set -uvx
 set -e
 cwd=`pwd`
+gh auth login --hostname github.com --git-protocol https --web
 killall boot4-x86_64-static || true
 sleep 3
 cp -p boot4-x86_64-static.exe ~/../
@@ -49,7 +50,6 @@ cat << EOS > spider.json
 }
 EOS
 #echo $GITHUB_ALL | gh auth login --with-token
-gh auth login --hostname github.com --git-protocol https --web
 cp spider.json upload.tmp/spider-release/spider-v$ts.json
 git add .
 git commit -m"Spider Explorer v$ts"
