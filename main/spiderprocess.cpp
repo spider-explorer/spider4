@@ -64,7 +64,7 @@ SpiderProcess::SpiderProcess(SpiderProcCallback callback)
     env.insert("HOME", np(uhomeDir));
     env.insert("PATH", pathAdded + ";" + g_core().env()["path"]);
     env.insert("REPO", QString(g_core().env()["docs"] + "/.repo").replace("/", "\\"));
-    env.insert("MSYS2", msys2Name);
+    env.insert("MSYS2", np(g_core().env()["prof"] + "/.software/msys2/current"));
     env.insert("MINGW_CHOST", "x86_64-w64-mingw32");
     env.insert("MINGW_PACKAGE_PREFIX", "mingw-w64-x86_64");
     env.insert("MINGW_PREFIX", "/mingw64");
