@@ -419,6 +419,33 @@ void SpiderCore::open_file(QWidget *widget, QString path)
             });
             sproc->start();
         }
+        else if (info.suffix() == "pdf")
+        {
+            SpiderProcess *sproc = new SpiderProcess(
+                [this, widget, path](SpiderProcStage stage, SpiderProcess *proc)
+            {
+                if (stage == SpiderProcStage::PROC_SETUP)
+                {
+                    proc->proc()->setProgram(ProgramDB().which("SumatraPDF.exe"));
+                    proc->proc()->setArguments(QStringList() << path);
+                    proc->proc()->setWorkingDirectory(QFileInfo(path).absolutePath());
+                }
+                else if (stage == SpiderProcStage::PROC_FINISH)
+                {
+                    if (proc->proc()->exitCode() == 0)
+                    {
+                        // QMessageBox::information(widget,
+                        // "確認", "SumatraPDFを起動しました");
+                    }
+                    else
+                    {
+                        QMessageBox::information(widget, "確認", "SumatraPDFの起動が失敗しました");
+                    }
+                    proc->deleteLater();
+                }
+            });
+            sproc->start();
+        }
         else if (info.suffix() == "c" || info.suffix() == "cpp" || info.suffix() == "cxx" ||
                  info.suffix() == "h" || info.suffix() == "hpp" || info.suffix() == "hxx" ||
                  info.suffix() == "mk" || info.suffix() == "make" ||
