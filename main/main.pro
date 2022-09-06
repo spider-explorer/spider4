@@ -144,8 +144,8 @@ RESOURCES += \
     spider2.qrc \
     vscode.qrc
 
-include($$(HOME)/include/include.pri)
-include($$(HOME)/qt/common/common.pri)
+include($$(HOME)/common/include/include.pri)
+include($$(HOME)/common/common/common.pri)
 
 #include($$PWD/../lib/lib.pri)
 #include($$PWD/../archive-api/archive-api.pri)

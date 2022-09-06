@@ -35,7 +35,7 @@ contains(QMAKE_QMAKE, .*static.*) {
 RESOURCES += \
     qt-console.qrc
 
-#include($$(HOME)/qt/common/common.pri)
+#include($$(HOME)/common/common/common.pri)
 
 SUBDIRS += \
     template-all.pro

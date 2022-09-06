@@ -31,4 +31,4 @@ contains(QMAKE_QMAKE, .*static.*) {
 
 gcc:QMAKE_POST_LINK=strip $$DESTDIR/$(TARGET)
 
-include($$(HOME)/qt/common/common.pri)
+include($$(HOME)/common/common/common.pri)
