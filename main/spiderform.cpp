@@ -8,16 +8,22 @@
 #include "spiderprocess.h"
 #include "ui_spiderform.h"
 #include "wslcore.h"
+#include "debug_line.h"
 SpiderForm::SpiderForm(QWidget *parent) : QWidget(parent), ui(new Ui::SpiderForm)
 {
+    qdebug_line();
     ui->setupUi(this);
     ui->tabWidget->setCurrentIndex(0);
     // MySettings settings;
+    qdebug_line();
+#if 0x0
     QByteArray state1 = g_settings().binary("form.spider/split_1").toByteArray();
     if (state1.size() > 0)
     {
         ui->splitter_1->restoreState(state1);
     }
+#endif
+    qdebug_line();
     //
     this->reloadNameList();
     connect(&m_reload_timer, &QTimer::timeout, [this]()

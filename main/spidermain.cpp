@@ -10,10 +10,14 @@
 #include "spidercore.h"
 #include "spiderprocess.h"
 #include "ui_spidermain.h"
+#include "debug_line.h"
 SpiderMain::SpiderMain(QWidget *parent) : QMainWindow(parent), ui(new Ui::SpiderMain)
 {
+    qdebug_line();
     ui->setupUi(this);
+    qdebug_line();
     {
+        qdebug_line();
         QRect geometry = QGuiApplication::primaryScreen()->availableGeometry();
         if (!QGuiApplication::styleHints()->showIsFullScreen()) {
             const QSize size = geometry.size() * 4 / 5;
@@ -21,12 +25,15 @@ SpiderMain::SpiderMain(QWidget *parent) : QMainWindow(parent), ui(new Ui::Spider
             const QPoint pos = geometry.topLeft() + QPoint(offset.width(), offset.height());
             geometry = QRect(pos, size);
         }
+        qdebug_line();
         this->setGeometry(geometry);
 #if 0x0
         ::SetForegroundWindow((HWND)winId());
         this->setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
 #endif
+        qdebug_line();
     }
+    qdebug_line();
     ui->toolBar->setStyleSheet(
         "QToolButton:!hover {background-color:lightgray} QToolBar {background: rgb(30, 30, 30)}");
     QString version = SPIDER_VERSION;

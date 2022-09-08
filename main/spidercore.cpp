@@ -118,7 +118,7 @@ QString SpiderCore::prepareProgram(JsonSettings &softwareSettings, QString progN
         }
         m_env["path"] = pathList.join(";") + ";" + m_env["path"];
     }
-    qdebug_line1("SpiderCore::prepareProgram(10)");
+    qdebug_line2("SpiderCore::prepareProgram(10)", progName);
     return junctionDir;
 }
 #if 0x0
