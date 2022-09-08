@@ -198,10 +198,12 @@ SpiderCore::SpiderCore(QSplashScreen &splash, const QString &mainDllPath) : m_sp
             if(appList[i]=="busybox") continue;
             if(appList[i]=="git") continue;
             if(appList[i]=="msys2") continue;
+            if(appList[i]=="ActiveTcl") continue;
             prepareProgram(softwareSettings, appList[i]);
         }
         qdebug_line();
         QString msys2_dir = prepareProgram(softwareSettings, "msys2");
+        QString atcl_dir = prepareProgram(softwareSettings, "ActiveTcl");
         if (false)
         {
             // pacman-key --init
