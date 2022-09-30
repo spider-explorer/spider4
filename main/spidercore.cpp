@@ -187,7 +187,11 @@ SpiderCore::SpiderCore(QSplashScreen &splash, const QString &mainDllPath) : m_sp
 #endif
 #endif
         //
-        QUrl softwareUrl("https://gitlab.com/spider-explorer/spider-software-2/-/raw/main/spider-software.json");
+        QUrl settingsUrl("https://gitlab.com/javacommons/settings/-/raw/main/spider-settings.json");
+        JsonSettings settingsSettings(settingsUrl);
+        //
+        //QUrl softwareUrl("https://gitlab.com/spider-explorer/spider-software-2/-/raw/main/spider-software.json");
+        QUrl softwareUrl(settingsSettings.value("softwareCatalogUrl").toString());
         JsonSettings softwareSettings(softwareUrl);
         qdebug_line1("SpiderCore::SpiderCore(5)");
         prepareProgram(softwareSettings, "busybox");
