@@ -17,27 +17,91 @@
 static SpiderCore *s_core = nullptr;
 static JsonSettings *s_settings = nullptr;
 static QMutex *s_mutex = nullptr;
-#if 0x0
-struct DecompressInfo
+QString SpiderCore::prepareProgram(const QVariantMap &progEntry)
 {
-    QSplashScreen *splash = nullptr;
-    QLocale *locale = nullptr;
-    QString progName;
-    QString version;
-};
-void myCallback(void *data, int64_t extractSizeTotal)
-{
-    //qDebug() << "myCallback() called.";
-    DecompressInfo *dinfo = (DecompressInfo *)data;
-    //QLocale locale;
-    dinfo->splash->showMessage(
-        QString("%1 を更新中(%2)...インストール中: %3")
-        .arg(dinfo->progName)
-        .arg(dinfo->version)
-        .arg(dinfo->locale->formattedDataSize(extractSizeTotal)),
+    qdebug_line1("SpiderCore::prepareProgram(1)");
+    JNetworkManager nm;
+    QString progName = progEntry["name"].toString();
+    QString urlString = progEntry["url"].toString();
+    QString version = progEntry["version"].toString();
+    QString ext = progEntry["ext"].toString();
+    QString path = progEntry["path"].toString();
+    m_splash.showMessage(QString("%1 を更新中(%2)...").arg(progName).arg(version), Qt::AlignLeft, Qt::white);
+    QString dlPath = m_env["prof"] + QString("/.software/%1/%1-%2.%3").arg(progName).arg(version).arg(ext);
+    QLocale locale;
+    qdebug_line1("SpiderCore::prepareProgram(2)");
+    if (!QFileInfo(dlPath).exists())
+    {
+        qdebug_line1("SpiderCore::prepareProgram(3)");
+        QString parentPath = QFileInfo(dlPath).absolutePath();
+        QDir(parentPath).removeRecursively();
+        qDebug() << nm.getBatchAsFile(urlString, dlPath,
+                                      [this, &locale, progName, version](QNetworkReply *reply)
+        {
+            m_splash.showMessage(
+                QString("%1 を更新中(%2)...ダウンロード中: %3")
+                .arg(progName)
+                .arg(version)
+                .arg(locale.formattedDataSize(reply->bytesAvailable())),
+                Qt::AlignLeft, Qt::white);
+        });
+    }
+    qdebug_line1("SpiderCore::prepareProgram(4)");
+    m_splash.showMessage(
+        QString("%1 を更新中(%2)...インストール中")
+        .arg(progName)
+        .arg(version),
         Qt::AlignLeft, Qt::white);
+    QString installDir = /* progName=="msys2" ? QString(R"***(C:\msys2)***") : */ m_env["prof"] + QString("/.software/%1/%2").arg(progName).arg(version);
+    QString junctionDir = /* progName=="msys2" ? QString("") : */ m_env["prof"] + QString("/.software/%1/current").arg(progName);
+    qdebug_line1("SpiderCore::prepareProgram(5)");
+    qdebug_line2("installDir", installDir);
+    if (!QFileInfo(installDir).exists())
+    {
+        qdebug_line1("SpiderCore::prepareProgram(6)");
+        qdebug_line2("(!QFileInfo(installDir).exists())", installDir);
+        qDebug() << extract_archive(dlPath, installDir,
+                                    [this, &locale, progName, version](qint64 extractSizeTotal)
+        {
+            m_splash.showMessage(
+                QString("%1 を更新中(%2)...インストール中: %3")
+                .arg(progName)
+                .arg(version)
+                .arg(locale.formattedDataSize(extractSizeTotal)),
+                Qt::AlignLeft, Qt::white);
+        });
+        JunctionManager().remove(junctionDir);
+        JunctionManager().create(junctionDir, installDir);
+    }
+    qdebug_line1("SpiderCore::prepareProgram(7)");
+    if (!QFileInfo(junctionDir).exists())
+    {
+        JunctionManager().create(junctionDir, installDir);
+    }
+    qdebug_line1("SpiderCore::prepareProgram(8)");
+    if(!path.isEmpty())
+    {
+        qdebug_line1("SpiderCore::prepareProgram(9)");
+        QStringList pathList = path.split(";");
+        for(int i=0; i<pathList.length(); i++)
+        {
+            QString pathElem = pathList[i];
+            if(pathElem==".")
+            {
+                pathElem = junctionDir;
+            }
+            else
+            {
+                pathElem = junctionDir + pathElem;
+            }
+            pathList[i] = np(pathElem);
+        }
+        m_env["path"] = pathList.join(";") + ";" + m_env["path"];
+    }
+    qdebug_line2("SpiderCore::prepareProgram(10)", progName);
+    return junctionDir;
 }
-#endif
+#if 0x0
 QString SpiderCore::prepareProgram(JsonSettings &softwareSettings, QString progName)
 {
     qdebug_line1("SpiderCore::prepareProgram(1)");
@@ -121,6 +185,7 @@ QString SpiderCore::prepareProgram(JsonSettings &softwareSettings, QString progN
     qdebug_line2("SpiderCore::prepareProgram(10)", progName);
     return junctionDir;
 }
+#endif
 #if 0x0
 QString SpiderCore::prepareWsl(QString distroName)
 {
@@ -191,13 +256,16 @@ SpiderCore::SpiderCore(QSplashScreen &splash, const QString &mainDllPath) : m_sp
         JsonSettings settingsSettings(settingsUrl);
         //
         //QUrl softwareUrl("https://gitlab.com/spider-explorer/spider-software-2/-/raw/main/spider-software.json");
-        QUrl softwareUrl(settingsSettings.value("softwareCatalogUrl").toString());
+        //QUrl softwareUrl(settingsSettings.value("softwareCatalogUrl").toString());
+        QUrl softwareUrl(settingsSettings.value("softwareArrayUrl").toString());
         JsonSettings softwareSettings(softwareUrl);
         qdebug_line1("SpiderCore::SpiderCore(5)");
-        prepareProgram(softwareSettings, "busybox");
-        QStringList appList = softwareSettings.value("software").toMap().keys();
+        ////prepareProgram(softwareSettings, "busybox");
+        //QStringList appList = softwareSettings.value("software").toMap().keys();
+        QVariantList appList = softwareSettings.value("software").toList();
         for(int i=0; i<appList.size(); i++)
         {
+#if 0x0
             qdebug_line2(i, appList[i]);
             if(appList[i]=="busybox") continue;
             if(appList[i]=="git") continue;
@@ -205,21 +273,32 @@ SpiderCore::SpiderCore(QSplashScreen &splash, const QString &mainDllPath) : m_sp
             if(appList[i]=="ActiveTcl") continue;
             if(appList[i]=="perl") continue;
             prepareProgram(softwareSettings, appList[i]);
+#else
+            QString progDir = prepareProgram(appList[i].toMap());
+            if (appList[i].toMap()["name"].toString() == "git")
+            {
+                QProcess gitProc;
+                gitProc.setProgram(progDir + "/bin/git.exe");
+                gitProc.setArguments(QStringList() << "config"
+                                                   << "--system"
+                                                   << "core.autocrlf"
+                                                   << "input");
+                gitProc.start();
+                gitProc.waitForFinished();
+                gitProc.setArguments(QStringList() << "config"
+                                                   << "--system"
+                                                   << "credential.helper"
+                                                   << "manager-core");
+                gitProc.start();
+                gitProc.waitForFinished();
+            }
+#endif
         }
         qdebug_line();
-        QString msys2_dir = prepareProgram(softwareSettings, "msys2");
-        QString atcl_dir = prepareProgram(softwareSettings, "ActiveTcl");
-        QString perl_dir = prepareProgram(softwareSettings, "perl");
-        if (false)
-        {
-            // pacman-key --init
-            //msys64/usr/bin/pacman-key
-            QProcess msys2Proc;
-            msys2Proc.setProgram(msys2_dir + "/msys64/usr/bin/bash.exe");
-            msys2Proc.setArguments(QStringList() <<  msys2_dir + "/msys64/usr/bin/pacman-key" << "--init");
-            msys2Proc.start();
-            msys2Proc.waitForFinished();
-        }
+        //QString msys2_dir = prepareProgram(softwareSettings, "msys2");
+        //QString atcl_dir = prepareProgram(softwareSettings, "ActiveTcl");
+        //QString perl_dir = prepareProgram(softwareSettings, "perl");
+#if 0x0
         //
         ////QString sevenzip_dir = prepareProgram(softwareSettings, "7zip");
         //
@@ -241,6 +320,7 @@ SpiderCore::SpiderCore(QSplashScreen &splash, const QString &mainDllPath) : m_sp
             gitProc.waitForFinished();
         }
         //stop(port);
+#endif
     }
     //
 #if 0x0

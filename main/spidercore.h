@@ -49,7 +49,7 @@ private:
     QSplashScreen m_one_moment;
 private:
 ////void prepareScoop();
-    QString prepareProgram(JsonSettings &softwareSettings, QString progName);
+    QString prepareProgram(const QVariantMap &progEntry);
     QString prepareWsl(QString distroName);
 };
 extern SpiderCore &g_core();
