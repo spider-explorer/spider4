@@ -11,8 +11,14 @@ SpiderProcess::SpiderProcess(SpiderProcCallback callback)
         QDir docsDir = g_core().env()["docs"];
         docsDir.mkpath(".repo");
     }
-    QString cmd2 = uhomeDir + "/cmd";
-    QString pathAdded = np(cmd2);
+    QString cmd = uhomeDir + "/cmd";
+    QString pathAdded = np(cmd);
+    QDir cmdDir(cmd);
+    QStringList subCmdList = cmdDir.entryList(QDir::Dirs);
+    foreach(QString subCmd, subCmdList)
+    {
+        pathAdded += QString(";%1\\%2").arg(cmd).arg(subCmd);
+    }
     auto msys2Name = g_core().selectedMsys2Name();
     QString msys2Dir = "";
     if (msys2Name.isEmpty())
@@ -40,14 +46,6 @@ SpiderProcess::SpiderProcess(SpiderProcCallback callback)
         env.insert("QT_MSYS2_ARCH", "amd64");
         env.insert("QT_MSYS2_STATIC", "true");
     }
-#if 0x0
-    QStringList c_include_path = env.value("C_INCLUDE_PATH").split(":");
-    c_include_path.prepend(np(uhomeDir + "/include"));
-    env.insert("C_INCLUDE_PATH", c_include_path.join(";"));
-    QStringList cplus_include_path = env.value("CPLUS_INCLUDE_PATH").split(":");
-    cplus_include_path.prepend(np(uhomeDir + "/include"));
-    env.insert("CPLUS_INCLUDE_PATH", cplus_include_path.join(";"));
-#endif
     env.insert("UNCRUSTIFY_CONFIG", np(uhomeDir + "/.uncrustify.cfg"));
     QStringList wslenv = env.value("WSLENV").split(":");
     env.insert("WIN_HOME", np(uhomeDir));
