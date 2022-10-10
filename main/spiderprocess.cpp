@@ -21,41 +21,9 @@ SpiderProcess::SpiderProcess(SpiderProcCallback callback)
     }
     //auto msys2Name = g_core().selectedMsys2Name();
     QString msys2Dir = np(g_core().env()["prof"] + "/.software/_msys2/current");
-#if 0x0
-    if (msys2Name.isEmpty())
-    {
-        msys2Name = "(none)";
-    }
-    else
-    {
-        msys2Dir = np(g_core().env()["msys2"] + "/" + msys2Name); //QT_MSYS2_DIR
-        //pathAdded += ";";
-        //pathAdded += np(g_core().env()["msys2"] + "/" + msys2Name + "/mingw64/bin");
-        //pathAdded += ";";
-        //pathAdded += np(g_core().env()["msys2"] + "/" + msys2Name + "/mingw64/qt5-static/bin");
-        //pathAdded += ";";
-        //pathAdded += np(g_core().env()["msys2"] + "/" + msys2Name + "/usr/bin");
-    }
-#endif
-    pathAdded += ";";
-    pathAdded += np(msys2Dir + "/mingw64/bin");
-    //pathAdded += ";";
-    //pathAdded += np(msys2Dir + "/mingw64/qt5-static/bin");
-    pathAdded += ";";
-    pathAdded += np(msys2Dir + "/usr/bin");
     m_proc = new QProcess();
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     m_env = &env;
-#if 0x0
-    if(msys2Name != "(none)")
-    {
-        env.insert("MSYS2_DIR", msys2Dir);
-        env.insert("QT_MSYS2", "true");
-        env.insert("QT_MSYS2_DIR", msys2Dir);
-        env.insert("QT_MSYS2_ARCH", "amd64");
-        env.insert("QT_MSYS2_STATIC", "true");
-    }
-#endif
     env.insert("UNCRUSTIFY_CONFIG", np(uhomeDir + "/.uncrustify.cfg"));
     QStringList wslenv = env.value("WSLENV").split(":");
     env.insert("WIN_HOME", np(uhomeDir));
