@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     g_env["temp"] = g_env["dir"] + "/temp";
     g_env["prof"] = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
     g_env["docs"] = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
-    g_env["msys2"] = g_env["prof"] + "/.software/msys2";
+    g_env["msys2"] = g_env["prof"] + "/.software/_msys2";
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     g_env["path"] = env.value("PATH");
     g_env["gitlab_token"] = env.value("GITLAB_READ_WRITE");

@@ -80,7 +80,7 @@ SpiderForm::SpiderForm(QWidget *parent) : QWidget(parent), ui(new Ui::SpiderForm
         }
         QListWidgetItem *item = ui->listWidget_2->currentItem();
         QMenu contextMenu("Context menu", this);
-        QString folder = g_core().env()["prof"] + "/.software/msys2/" + item->text();
+        QString folder = g_core().env()["prof"] + "/.software/_msys2/" + item->text();
         emit signal_msys2RequestedContextMenu(contextMenu, folder);
         contextMenu.exec(ui->listWidget_2->viewport()->mapToGlobal(pos));
     });

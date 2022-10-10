@@ -21,7 +21,7 @@ void Msys2Dialog::on_lineEdit_textChanged(const QString &arg1)
 {
     qDebug() << arg1;
     QString userProfile = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-    QString msys2Path = userProfile + "/.software/msys2/" + arg1;
+    QString msys2Path = userProfile + "/.software/_msys2/" + arg1;
     ui->label->setText("");
     // QRegExp rx("^[a-z0-9_-]+$", Qt::CaseSensitivity::CaseSensitive);
     if (arg1.isEmpty())

@@ -19,8 +19,9 @@ SpiderProcess::SpiderProcess(SpiderProcCallback callback)
     {
         pathAdded += QString(";%1\\%2").arg(cmd).arg(subCmd);
     }
-    auto msys2Name = g_core().selectedMsys2Name();
-    QString msys2Dir = "";
+    //auto msys2Name = g_core().selectedMsys2Name();
+    QString msys2Dir = np(g_core().env()["prof"] + "/.software/_msys2/current");
+#if 0x0
     if (msys2Name.isEmpty())
     {
         msys2Name = "(none)";
@@ -35,9 +36,17 @@ SpiderProcess::SpiderProcess(SpiderProcCallback callback)
         //pathAdded += ";";
         //pathAdded += np(g_core().env()["msys2"] + "/" + msys2Name + "/usr/bin");
     }
+#endif
+    pathAdded += ";";
+    pathAdded += np(msys2Dir + "/mingw64/bin");
+    //pathAdded += ";";
+    //pathAdded += np(msys2Dir + "/mingw64/qt5-static/bin");
+    pathAdded += ";";
+    pathAdded += np(msys2Dir + "/usr/bin");
     m_proc = new QProcess();
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     m_env = &env;
+#if 0x0
     if(msys2Name != "(none)")
     {
         env.insert("MSYS2_DIR", msys2Dir);
@@ -46,6 +55,7 @@ SpiderProcess::SpiderProcess(SpiderProcCallback callback)
         env.insert("QT_MSYS2_ARCH", "amd64");
         env.insert("QT_MSYS2_STATIC", "true");
     }
+#endif
     env.insert("UNCRUSTIFY_CONFIG", np(uhomeDir + "/.uncrustify.cfg"));
     QStringList wslenv = env.value("WSLENV").split(":");
     env.insert("WIN_HOME", np(uhomeDir));
@@ -62,7 +72,7 @@ SpiderProcess::SpiderProcess(SpiderProcCallback callback)
     env.insert("HOME", np(uhomeDir));
     env.insert("PATH", pathAdded + ";" + g_core().env()["path"]);
     env.insert("REPO", QString(g_core().env()["docs"] + "/.repo").replace("/", "\\"));
-    env.insert("MSYS2", np(g_core().env()["prof"] + "/.software/msys2/current"));
+    env.insert("MSYS2", np(msys2Dir));
     env.insert("MINGW_CHOST", "x86_64-w64-mingw32");
     env.insert("MINGW_PACKAGE_PREFIX", "mingw-w64-x86_64");
     env.insert("MINGW_PREFIX", "/mingw64");
@@ -70,7 +80,7 @@ SpiderProcess::SpiderProcess(SpiderProcCallback callback)
     env.insert("MSYSTEM_CHOST", "x86_64-w64-mingw32");
     env.insert("MSYSTEM_PREFIX", "/mingw64");
     env.insert("MSYSTEM", "MINGW64");
-    env.insert("GOROOT", np(g_core().env()["prof"] + "/.software/msys2/current/mingw64/lib/go"));
+    env.insert("GOROOT", np(msys2Dir + "/mingw64/lib/go"));
     env.insert("WSLENV", wslenv.join(":"));
     m_proc->setWorkingDirectory(np(uhomeDir));
     callback(SpiderProcStage::PROC_SETUP, this);

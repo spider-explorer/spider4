@@ -279,7 +279,7 @@ QString MainWindow::selectedMsys2Name()
 {
     // MySettings settings;
     QString msys2 = g_settings().value("selected/msys2Name").toString();
-    QString msys2Dir = g_core().env()["prof"] + "/.software/msys2/" + msys2;
+    QString msys2Dir = g_core().env()["prof"] + "/.software/_msys2/" + msys2;
     if (!QDir(msys2Dir).exists())
     {
         g_settings().setValue("selected/msys2Name", "");

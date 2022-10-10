@@ -52,8 +52,8 @@ QString SpiderCore::prepareProgram(const QVariantMap &progEntry)
         .arg(progName)
         .arg(version),
         Qt::AlignLeft, Qt::white);
-    QString installDir = /* progName=="msys2" ? QString(R"***(C:\msys2)***") : */ m_env["prof"] + QString("/.software/%1/%2").arg(progName).arg(version);
-    QString junctionDir = /* progName=="msys2" ? QString("") : */ m_env["prof"] + QString("/.software/%1/current").arg(progName);
+    QString installDir = m_env["prof"] + QString("/.software/%1/%2").arg(progName).arg(version);
+    QString junctionDir = m_env["prof"] + QString("/.software/%1/current").arg(progName);
     qdebug_line1("SpiderCore::prepareProgram(5)");
     qdebug_line2("installDir", installDir);
     if (!QFileInfo(installDir).exists())
@@ -222,7 +222,7 @@ SpiderCore::SpiderCore(QSplashScreen &splash, const QString &mainDllPath) : m_sp
     m_env["prof"] = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
     m_env["docs"] = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
     m_env["repoRoot"] = m_env["docs"] + "/.repo";
-    m_env["msys2"] = m_env["prof"] + "/.software/msys2";
+    m_env["msys2"] = m_env["prof"] + "/.software/_msys2";
     qdebug_line1("SpiderCore::SpiderCore(3)");
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     m_env["path"] = env.value("PATH");
@@ -265,15 +265,6 @@ SpiderCore::SpiderCore(QSplashScreen &splash, const QString &mainDllPath) : m_sp
         QVariantList appList = softwareSettings.value("software").toList();
         for(int i=0; i<appList.size(); i++)
         {
-#if 0x0
-            qdebug_line2(i, appList[i]);
-            if(appList[i]=="busybox") continue;
-            if(appList[i]=="git") continue;
-            if(appList[i]=="msys2") continue;
-            if(appList[i]=="ActiveTcl") continue;
-            if(appList[i]=="perl") continue;
-            prepareProgram(softwareSettings, appList[i]);
-#else
             QString progDir = prepareProgram(appList[i].toMap());
             if (appList[i].toMap()["name"].toString() == "git")
             {
@@ -292,35 +283,8 @@ SpiderCore::SpiderCore(QSplashScreen &splash, const QString &mainDllPath) : m_sp
                 gitProc.start();
                 gitProc.waitForFinished();
             }
-#endif
         }
         qdebug_line();
-        //QString msys2_dir = prepareProgram(softwareSettings, "msys2");
-        //QString atcl_dir = prepareProgram(softwareSettings, "ActiveTcl");
-        //QString perl_dir = prepareProgram(softwareSettings, "perl");
-#if 0x0
-        //
-        ////QString sevenzip_dir = prepareProgram(softwareSettings, "7zip");
-        //
-        QString git_dir = prepareProgram(softwareSettings, "git");
-        {
-            QProcess gitProc;
-            gitProc.setProgram(git_dir + "/bin/git.exe");
-            gitProc.setArguments(QStringList() << "config"
-                                               << "--system"
-                                               << "core.autocrlf"
-                                               << "input");
-            gitProc.start();
-            gitProc.waitForFinished();
-            gitProc.setArguments(QStringList() << "config"
-                                               << "--system"
-                                               << "credential.helper"
-                                               << "manager-core");
-            gitProc.start();
-            gitProc.waitForFinished();
-        }
-        //stop(port);
-#endif
     }
     //
 #if 0x0
@@ -358,7 +322,7 @@ QString SpiderCore::selectedMsys2Name()
 {
     // MySettings settings;
     QString msys2 = g_settings().value("selected/msys2Name").toString();
-    QString msys2Dir = m_env["prof"] + "/.software/msys2/" + msys2;
+    QString msys2Dir = m_env["prof"] + "/.software/_msys2/" + msys2;
     if (!QDir(msys2Dir).exists())
     {
         g_settings().setValue("selected/msys2Name", "");
