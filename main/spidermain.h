@@ -35,6 +35,8 @@ private slots:
     void on_actionAirExplorer_triggered();
     void on_actionEverything_triggered();
     void on_actionJoinMP4Files_triggered();
+    void on_actionObsidian_triggered();
+
 private:
     Ui::SpiderMain *ui;
 };

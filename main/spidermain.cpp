@@ -667,3 +667,27 @@ void SpiderMain::on_actionEverything_triggered()
 void SpiderMain::on_actionJoinMP4Files_triggered()
 {
 }
+void SpiderMain::on_actionObsidian_triggered()
+{
+    SpiderProcess *sproc = new SpiderProcess(
+        [this](SpiderProcStage stage, SpiderProcess *proc)
+    {
+        if (stage == SpiderProcStage::PROC_SETUP)
+        {
+            proc->proc()->setProgram(ProgramDB().which("Obsidian.exe"));
+        }
+        else if (stage == SpiderProcStage::PROC_FINISH)
+        {
+            if (proc->proc()->exitCode() == 0)
+            {
+                // QMessageBox::information(this, "確認", QString("Obsidianを起動しました"));
+            }
+            else
+            {
+                QMessageBox::information(this, "確認", QString("Obsidianの起動が失敗しました"));
+            }
+            proc->deleteLater();
+        }
+    });
+    sproc->start();
+}

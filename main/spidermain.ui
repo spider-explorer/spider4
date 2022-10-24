@@ -146,26 +146,20 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionTest01"/>
-   <addaction name="actionTest02"/>
    <addaction name="actionManageScoop"/>
    <addaction name="actionManageEnvVars"/>
-   <addaction name="actionQtCreator"/>
    <addaction name="actionChrome"/>
+   <addaction name="actionObsidian"/>
+   <addaction name="actionQtCreator"/>
+   <addaction name="actionSQLiteStudio"/>
+   <addaction name="actionRapidEE"/>
+   <addaction name="actionQOwnNotes"/>
    <addaction name="actionNotepad3"/>
    <addaction name="actionLibreOffice"/>
    <addaction name="actionAirExplorer"/>
    <addaction name="actionEverything"/>
    <addaction name="actionFolderSize"/>
-   <addaction name="actionRapidEE"/>
-   <addaction name="actionSQLiteStudio"/>
-   <addaction name="actionQOwnNotes"/>
   </widget>
-  <action name="actionTest01">
-   <property name="text">
-    <string>Test01</string>
-   </property>
-  </action>
   <action name="actionChrome">
    <property name="text">
     <string>【Chrome】</string>
@@ -206,19 +200,14 @@
     <string>【QOwnNotes】</string>
    </property>
   </action>
-  <action name="actionTest02">
-   <property name="text">
-    <string>Test02</string>
-   </property>
-  </action>
   <action name="actionManageScoop">
    <property name="text">
-    <string>【scoop管理】</string>
+    <string>【scoop】</string>
    </property>
   </action>
   <action name="actionManageEnvVars">
    <property name="text">
-    <string>【環境変数管理】</string>
+    <string>【環境変数】</string>
    </property>
   </action>
   <action name="actionLazarus">
@@ -234,6 +223,11 @@
   <action name="actionEverything">
    <property name="text">
     <string>【Everything】</string>
+   </property>
+  </action>
+  <action name="actionObsidian">
+   <property name="text">
+    <string>【Obsidian】</string>
    </property>
   </action>
  </widget>
