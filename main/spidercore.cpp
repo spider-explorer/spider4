@@ -222,6 +222,7 @@ SpiderCore::SpiderCore(QSplashScreen &splash, const QString &mainDllPath) : m_sp
     m_env["prof"] = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
     m_env["docs"] = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
     m_env["repoRoot"] = m_env["docs"] + "/.repo";
+    QDir(m_env["repoRoot"]).mkpath(".");
     m_env["msys2"] = m_env["prof"] + "/.software/_msys2";
     qdebug_line1("SpiderCore::SpiderCore(3)");
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
