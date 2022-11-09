@@ -444,8 +444,51 @@ void SpiderCore::open_file(QWidget *widget, QString path)
                 break;
             }
         }
-        if (info.suffix() == "7z" || info.suffix() == "gz" || info.suffix() == "xz" || info.suffix() == "tar" ||
-            info.suffix() == "zip")
+        if (info.suffix() == "sln" || info.suffix() == "csproj")
+        {
+            SpiderProcess *sproc = new SpiderProcess(
+                [this, widget, path](SpiderProcStage stage, SpiderProcess *proc)
+            {
+                QString devenv = "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Common7\\IDE\\devenv.exe";
+                QString prog;
+                QString wd;
+                QString target;
+                if (QFileInfo(devenv).exists())
+                {
+                    prog = devenv;
+                    wd = QFileInfo(path).absolutePath();
+                    target = path;
+                }
+                else
+                {
+                    prog = ProgramDB().which("Code.exe");
+                    wd = QFileInfo(path).absolutePath();
+                    target = wd;
+                }
+                if (stage == SpiderProcStage::PROC_SETUP)
+                {
+                    proc->proc()->setProgram(prog);
+                    proc->proc()->setArguments(QStringList() << target);
+                    proc->proc()->setWorkingDirectory(wd);
+                }
+                else if (stage == SpiderProcStage::PROC_FINISH)
+                {
+                    if (proc->proc()->exitCode() == 0)
+                    {
+                        // QMessageBox::information(widget,
+                        // "確認", "プロジェクト/ソリューションを開きました");
+                    }
+                    else
+                    {
+                        QMessageBox::information(widget, "確認", "プロジェクト/ソリューションを開けませんでした");
+                    }
+                    proc->deleteLater();
+                }
+            });
+            sproc->start();
+        }
+        else if (info.suffix() == "7z" || info.suffix() == "gz" || info.suffix() == "xz" || info.suffix() == "tar" ||
+                 info.suffix() == "zip")
         {
             SpiderProcess *sproc = new SpiderProcess(
                 [this, widget, path](SpiderProcStage stage, SpiderProcess *proc)
