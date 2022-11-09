@@ -148,6 +148,7 @@
    </attribute>
    <addaction name="actionManageScoop"/>
    <addaction name="actionManageEnvVars"/>
+   <addaction name="actionFirefox"/>
    <addaction name="actionChrome"/>
    <addaction name="actionObsidian"/>
    <addaction name="actionQtCreator"/>
@@ -228,6 +229,11 @@
   <action name="actionObsidian">
    <property name="text">
     <string>【Obsidian】</string>
+   </property>
+  </action>
+  <action name="actionFirefox">
+   <property name="text">
+    <string>【Firefox】</string>
    </property>
   </action>
  </widget>

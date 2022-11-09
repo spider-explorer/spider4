@@ -37,6 +37,8 @@ private slots:
     void on_actionJoinMP4Files_triggered();
     void on_actionObsidian_triggered();
 
+    void on_actionFirefox_triggered();
+
 private:
     Ui::SpiderMain *ui;
 };

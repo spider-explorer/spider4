@@ -691,3 +691,27 @@ void SpiderMain::on_actionObsidian_triggered()
     });
     sproc->start();
 }
+void SpiderMain::on_actionFirefox_triggered()
+{
+    SpiderProcess *sproc = new SpiderProcess(
+        [this](SpiderProcStage stage, SpiderProcess *proc)
+    {
+        if (stage == SpiderProcStage::PROC_SETUP)
+        {
+            proc->proc()->setProgram(ProgramDB().which("firefox.exe"));
+        }
+        else if (stage == SpiderProcStage::PROC_FINISH)
+        {
+            if (proc->proc()->exitCode() == 0)
+            {
+                // QMessageBox::information(this, "確認", QString("Firefoxを起動しました"));
+            }
+            else
+            {
+                QMessageBox::information(this, "確認", QString("Firefoxの起動が失敗しました"));
+            }
+            proc->deleteLater();
+        }
+    });
+    sproc->start();
+}
