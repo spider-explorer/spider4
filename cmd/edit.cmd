@@ -1,3 +1,3 @@
 @echo off
-runemacs %*
-rem emacs -nw %*
+rem runemacs %*
+emacs -nw %*
