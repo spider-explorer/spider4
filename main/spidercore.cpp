@@ -1058,6 +1058,33 @@ void SpiderCore::open_vscode(QWidget *widget, QString repoDir)
     });
     sproc->start();
 }
+void SpiderCore::open_emacs(QWidget *widget, QString repoDir)
+{
+    SpiderProcess *sproc = new SpiderProcess(
+        [widget, repoDir](SpiderProcStage stage, SpiderProcess *proc)
+    {
+        if (stage == SpiderProcStage::PROC_SETUP)
+        {
+            proc->proc()->setProgram(ProgramDB().which("runemacs.exe"));
+            proc->proc()->setArguments(QStringList() << "--debug-init" << repoDir);
+            proc->proc()->setWorkingDirectory(repoDir);
+        }
+        else if (stage == SpiderProcStage::PROC_FINISH)
+        {
+            if (proc->proc()->exitCode() == 0)
+            {
+                // QMessageBox::information(widget, "確認",
+                // "emacsを起動しました");
+            }
+            else
+            {
+                QMessageBox::information(widget, "確認", "emacsの起動が失敗しました");
+            }
+            proc->deleteLater();
+        }
+    });
+    sproc->start();
+}
 void SpiderCore::open_smartgit(QWidget *widget, QString repoDir)
 {
     m_one_moment.show();

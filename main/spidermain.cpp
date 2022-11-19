@@ -73,6 +73,12 @@ SpiderMain::SpiderMain(QWidget *parent) : QMainWindow(parent), ui(new Ui::Spider
             g_core().open_vscode(this, path);
         });
         contextMenu.addAction(actOpenVscode);
+        QAction *actOpenEmacs = new QAction(QString("%1 をemacsで開く").arg(QFileInfo(path).fileName()), this);
+        QObject::connect(actOpenEmacs, &QAction::triggered, [this, path]()
+        {
+            g_core().open_emacs(this, path);
+        });
+        contextMenu.addAction(actOpenEmacs);
         QAction *actRemove = new QAction(QString("%1 を削除する").arg(QFileInfo(path).fileName()), this);
         QObject::connect(actRemove, &QAction::triggered, [this, path]()
         {
@@ -263,6 +269,14 @@ SpiderMain::SpiderMain(QWidget *parent) : QMainWindow(parent), ui(new Ui::Spider
                 g_core().open_vscode(this, repoDir);
             });
             contextMenu.addAction(actOpenVscode);
+        }
+        {
+            QAction *actOpenEmacs = new QAction(QString("%1 をemacsで開く").arg(repo), this);
+            QObject::connect(actOpenEmacs, &QAction::triggered, [this, repoDir]()
+            {
+                g_core().open_emacs(this, repoDir);
+            });
+            contextMenu.addAction(actOpenEmacs);
         }
         QAction *actRemove = new QAction(QString("%1 を削除").arg(repo), this);
         QObject::connect(actRemove, &QAction::triggered,

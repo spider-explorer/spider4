@@ -40,6 +40,7 @@ public:
     void remove_msys2(QWidget *widget, QString name);
     void open_git_page(QWidget *widget, QString repoDir);
     void open_vscode(QWidget *widget, QString repoDir);
+    void open_emacs(QWidget *widget, QString repoDir);
     void open_smartgit(QWidget *widget, QString repoDir);
 private:
     QMap<QString, QString> m_env;
