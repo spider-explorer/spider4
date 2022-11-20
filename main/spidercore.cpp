@@ -1065,8 +1065,15 @@ void SpiderCore::open_emacs(QWidget *widget, QString repoDir)
     {
         if (stage == SpiderProcStage::PROC_SETUP)
         {
-            proc->proc()->setProgram(ProgramDB().which("runemacs.exe"));
-            proc->proc()->setArguments(QStringList() << "--debug-init" << repoDir);
+            //proc->proc()->setProgram(ProgramDB().which("runemacs.exe"));
+            //proc->proc()->setArguments(QStringList() << "--debug-init" << repoDir);
+            //proc->proc()->setWorkingDirectory(repoDir);
+            proc->proc()->setProgram(ProgramDB().which("wt.exe"));
+            proc->proc()->setArguments(
+                QStringList() /*<< "--focus"*/ << R"(nt)"
+                                               << "--title"
+                                               << QString("(Emacs) %1").arg(repoDir)
+                                               << "-d" << repoDir << R"(nyagos.exe)" << "-k" << "emacs.exe -nw");
             proc->proc()->setWorkingDirectory(repoDir);
         }
         else if (stage == SpiderProcStage::PROC_FINISH)
