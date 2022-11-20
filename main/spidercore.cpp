@@ -404,10 +404,10 @@ void SpiderCore::open_bash(QWidget *widget, QString path)
                                                      << QString("(Bash) %1 + %2")
                                        .arg(uhomeName.isEmpty() ? ".repo" : uhomeName)
                                        .arg(msys2Name.isEmpty() ? "(none)" : msys2Name)
-                                                     << "-d" << path << "busybox.exe"
-                                                     << "bash"
-                                                     << "-l"
-                                                     << "-c" << QString("cd '%1' && bash").arg(path));
+                                                     << "-d" << path
+                                                     << "nyagos.exe" << "-c"
+                                                     << "busybox.exe bash"
+                                       );
             proc->proc()->setWorkingDirectory(path);
         }
         else if (stage == SpiderProcStage::PROC_FINISH)
