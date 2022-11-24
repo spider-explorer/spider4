@@ -772,7 +772,7 @@ void SpiderCore::remove_repo(QWidget *widget, QString repoDir)
     }
     QString buffer;
     QTextStream strm(&buffer);
-    strm << QString("#! bash -uvx") << Qt::endl;
+    strm << QString("set -uvx") << Qt::endl;
     strm << QString("set -e") << Qt::endl;
     strm << QString("pwd") << Qt::endl;
     strm << QString("cd %1").arg(repoRoot) << Qt::endl;
@@ -798,7 +798,7 @@ void SpiderCore::refresh_repo(QWidget *widget, QString repoDir)
     }
     QString buffer;
     QTextStream strm(&buffer);
-    strm << QString("#! bash -uvx") << Qt::endl;
+    strm << QString("set -uvx") << Qt::endl;
     strm << QString("set -e") << Qt::endl;
     strm << QString("pwd") << Qt::endl;
     strm << QString("cd %1/.repo/%2").arg(g_core().env()["docs"]).arg(repo) << Qt::endl;

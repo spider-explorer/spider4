@@ -267,7 +267,7 @@ void SpiderForm::on_btnCloneRepo_clicked()
     QString repoUrl = dlg.url();
     QString buffer;
     QTextStream strm(&buffer);
-    strm << QString("#! bash -uvx") << Qt::endl;
+    strm << QString("set -uvx") << Qt::endl;
     strm << QString("set -e") << Qt::endl;
     strm << QString("pwd") << Qt::endl;
     strm << QString("cd %1").arg(g_core().env()["docs"]) << Qt::endl;

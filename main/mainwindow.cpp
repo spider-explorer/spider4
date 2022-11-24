@@ -323,7 +323,7 @@ void MainWindow::clone_repo()
     QString repoUrl = dlg.url();
     QString buffer;
     QTextStream strm(&buffer);
-    strm << QString("#! bash -uvx") << Qt::endl;
+    strm << QString("set -uvx") << Qt::endl;
     strm << QString("set -e") << Qt::endl;
     strm << QString("pwd") << Qt::endl;
     strm << QString("cd %1").arg(g_core().env()["docs"]) << Qt::endl;
@@ -346,7 +346,7 @@ void MainWindow::remove_repo(QString repo)
     }
     QString buffer;
     QTextStream strm(&buffer);
-    strm << QString("#! bash -uvx") << Qt::endl;
+    strm << QString("set -uvx") << Qt::endl;
     strm << QString("set -e") << Qt::endl;
     strm << QString("pwd") << Qt::endl;
     strm << QString("cd %1").arg(g_core().env()["docs"]) << Qt::endl;
@@ -369,7 +369,7 @@ void MainWindow::refresh_repo(QString repo)
     }
     QString buffer;
     QTextStream strm(&buffer);
-    strm << QString("#! bash -uvx") << Qt::endl;
+    strm << QString("set -uvx") << Qt::endl;
     strm << QString("set -e") << Qt::endl;
     strm << QString("pwd") << Qt::endl;
     strm << QString("cd %1/.repo/%2").arg(g_core().env()["docs"]).arg(repo) << Qt::endl;
@@ -697,7 +697,7 @@ void MainWindow::showContextMenuForListWidget3(QListWidget *listWidget, QMenu &c
         QString installDir = g_core().env()["prof"] + QString("/.software/wsl/Ubuntu/%1").arg(distro);
         QString buffer;
         QTextStream strm(&buffer);
-        strm << QString("#! bash -uvx") << Qt::endl;
+        strm << QString("set -uvx") << Qt::endl;
         strm << QString("pwd") << Qt::endl;
         strm << QString("wsl -t %1 >/dev/null 2>&1").arg(distro) << Qt::endl;
         strm << QString("wsl --unregister %1 >/dev/null 2>&1").arg(distro) << Qt::endl;
@@ -910,7 +910,7 @@ void MainWindow::on_btnScoopManage_clicked()
         QString buffer;
         QTextStream strm(&buffer);
         QStringList bucketList = bucketSet.values();
-        strm << QString("#! bash -uvx") << Qt::endl;
+        strm << QString("set -uvx") << Qt::endl;
         foreach (QString bucket, bucketList)
         {
             strm << QString("scoop bucket add %1").arg(bucket) << Qt::endl;
@@ -986,7 +986,7 @@ void MainWindow::on_scoopSearch_clicked()
         QString buffer;
         QTextStream strm(&buffer);
         QStringList bucketList = bucketSet.values();
-        strm << QString("#! bash -uvx") << Qt::endl;
+        strm << QString("set -uvx") << Qt::endl;
         foreach (QString bucket, bucketList)
         {
             strm << QString("scoop bucket add %1").arg(bucket) << Qt::endl;
@@ -1036,7 +1036,7 @@ void MainWindow::on_btnUbuntuInstall_clicked()
     qDebug() << installDir;
     QString buffer;
     QTextStream strm(&buffer);
-    strm << QString("#! bash -uvx") << Qt::endl;
+    strm << QString("set -uvx") << Qt::endl;
     strm << QString("pwd") << Qt::endl;
     strm << QString("wsl -t %1 >/dev/null 2>&1").arg(wslName) << Qt::endl;
     strm << QString("wsl --unregister %1 >/dev/null 2>&1").arg(wslName) << Qt::endl;
@@ -1065,7 +1065,7 @@ void MainWindow::on_btnUbuntuImport_clicked()
     qDebug() << installDir;
     QString buffer;
     QTextStream strm(&buffer);
-    strm << QString("#! bash -uvx") << Qt::endl;
+    strm << QString("set -uvx") << Qt::endl;
     strm << QString("pwd") << Qt::endl;
     strm << QString("wsl -t %1 >/dev/null 2>&1").arg(wslName) << Qt::endl;
     strm << QString("wsl --unregister %1 >/dev/null 2>&1").arg(wslName) << Qt::endl;

@@ -585,7 +585,7 @@ void SpiderMain::on_actionManageScoop_triggered()
         QString buffer;
         QTextStream strm(&buffer);
         QStringList bucketList = bucketSet.values();
-        strm << QString("#! bash -uvx") << Qt::endl;
+        strm << QString("set -uvx") << Qt::endl;
         foreach (QString bucket, bucketList)
         {
             strm << QString("scoop bucket add %1").arg(bucket) << Qt::endl;

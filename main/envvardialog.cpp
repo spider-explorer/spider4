@@ -102,28 +102,6 @@ void EnvVarDialog::on_listWidget_currentTextChanged(const QString &currentText)
 }
 void EnvVarDialog::on_btnTransferToPC_clicked()
 {
-#if 0x0
-    QString buffer;
-    QTextStream strm(&buffer);
-    strm << QString("#! bash -uvx") << Qt::endl;
-    strm << QString("set -e") << Qt::endl;
-    strm << QString("pwd") << Qt::endl;
-    strm << Qt::flush;
-    // QFileInfo file(m_iniFileName);
-    // QFileInfo dir(file.absolutePath());
-    SpiderSettings settings(m_env, m_repo);
-    settings.settings().beginGroup("environmentVariable");
-    auto keys = settings.settings().childKeys();
-    for (int i = 0; i < keys.size(); i++)
-    {
-        strm << QString("envset.exe set %1 \"%2\"").arg(keys[i]).arg(settings.settings().value(keys[i]).toString())
-             << Qt::endl;
-    }
-    settings.settings().endGroup();
-    QString cmdLines = *strm.string();
-    CmdProcess *proc = new CmdProcess(m_env, QString("環境変数をPCに転送"), cmdLines, ".sh");
-    proc->run();
-#else
     if (!m_home.isEmpty())
     {
         QProcess proc;
@@ -147,5 +125,4 @@ void EnvVarDialog::on_btnTransferToPC_clicked()
     }
     settings.settings().endGroup();
     QMessageBox::information(this, "確認", "環境変数をPCに転送しました");
-#endif
 }
